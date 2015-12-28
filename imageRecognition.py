@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from statistics import mean
+from collections import Counter
 import time
 
 i = Image.open('images/numbers/0.1.png') #Get our image
@@ -55,8 +56,37 @@ def threshold(imageArray):
 
 def whatNumIsThis(filePath):
     matchedArray = []
-    
+    loadExamples = open('numArEx.txt', 'r').read()
+    loadExamples = loadExamples.split('\n')
 
+    i = Image.open(filePath)
+    iar = np.array(i)
+    iarl = iar.tolist()
+
+    inQuestion = str(iarl)
+
+    for example in loadExamples:
+        if len(example) > 3:
+            splitEx = example.split('::')
+            curNum = splitEx[0]
+            curArray = splitEx[1]
+
+            pixel = curArray.split('],')
+
+            pixelInQuestion = inQuestion.split('],')
+
+            x = 0
+            while (x < len(pixel)):
+                if(pixel[x] == pixelInQuestion[x]):
+                    matchedArray.append(int(curNum))
+                x += 1
+
+    print matchedArray
+    x = Counter(matchedArray)
+    print x
+
+
+whatNumIsThis('images/test.png')
 createExamples()
 threshold(iArray)
 plt.imshow(iArray)
