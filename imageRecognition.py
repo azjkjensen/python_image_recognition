@@ -4,6 +4,7 @@ from PIL import Image
 from statistics import mean
 from collections import Counter
 import time
+import uuid
 
 i = Image.open('images/numbers/0.1.png') #Get our image
 
@@ -18,7 +19,7 @@ def createExamples():
     versionsWeHave = range(1,10)
     for number in numbersWeHave:
         for version in versionsWeHave:
-            print str(number) + '.' + str(version)
+            # print str(number) + '.' + str(version)
             imgFilePath = 'images/numbers/' + str(number) + '.' + str(version) + '.png'
             ei = Image.open(imgFilePath)
             eiArray = np.array(ei)
@@ -81,13 +82,28 @@ def whatNumIsThis(filePath):
                     matchedArray.append(int(curNum))
                 x += 1
 
-    print matchedArray
+    # print matchedArray
     x = Counter(matchedArray)
     print x
+    winner = 0
+    for number in x:
+        # print x[number]
+        # print winner
+        if x[number] > x[winner]:
+            winner = number
+    isCorrectAnswer = raw_input('is ' + str(winner) + ' the number you drew? ')
+    if(isCorrectAnswer == 'yes' or isCorrectAnswer == 'Yes'):
+        print 'hoorah! I\'m learning.'
+    elif (isCorrectAnswer == 'no') or (isCorrectAnswer == 'No'):
+        correctAnswer = input('what number did you draw? ')
+        i.save('images/learned/' + str(uuid.uuid4()) + str(correctAnswer), 'png')
 
 
-whatNumIsThis('images/test.png')
+
+
 createExamples()
 threshold(iArray)
 plt.imshow(iArray)
-plt.show()
+# plt.show()
+
+whatNumIsThis('images/test.png')
