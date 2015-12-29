@@ -93,9 +93,9 @@ def whatNumIsThis(filePath):
             winner = number
     isCorrectAnswer = raw_input('is ' + str(winner) + ' the number you drew? ')
     if(isCorrectAnswer == 'yes' or isCorrectAnswer == 'Yes'):
-        print 'hoorah! I\'m learning.'
+        print 'Hoorah! I\'m learning.'
     elif (isCorrectAnswer == 'no') or (isCorrectAnswer == 'No'):
-        correctAnswer = input('what number did you draw? ')
+        correctAnswer = input('What number did you draw? ')
         i.save('images/learned/' + str(uuid.uuid4()) + str(correctAnswer), 'png')
 
 
