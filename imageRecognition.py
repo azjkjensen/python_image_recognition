@@ -6,12 +6,6 @@ from collections import Counter
 import time
 import uuid
 
-i = Image.open('images/numbers/0.1.png') #Get our image
-
-iArray = np.array(i) #Convert image to an array
-
-plt.imshow(iArray)
-# plt.show()
 
 def createExamples():
     numberArrayExamples = open('numArEx.txt','a')
@@ -94,17 +88,7 @@ def whatNumIsThis(filePath):
     isCorrectAnswer = raw_input('is ' + str(winner) + ' the number you drew? ')
     if(isCorrectAnswer == 'yes' or isCorrectAnswer == 'Yes'):
         print 'Hoorah! I\'m learning.'
-        i.save('images/learned/' + str(uuid.uuid4()) + str(correctAnswer), 'png')
+        i.save('images/learned/'  + str(correctAnswer) + str(uuid.uuid4()), 'png')
     elif (isCorrectAnswer == 'no') or (isCorrectAnswer == 'No'):
         correctAnswer = input('What number did you draw? ')
-        i.save('images/learned/' + str(uuid.uuid4()) + str(correctAnswer), 'png')
-
-
-
-
-createExamples()
-threshold(iArray)
-plt.imshow(iArray)
-# plt.show()
-
-whatNumIsThis('images/test.png')
+        i.save('images/learned/' + str(correctAnswer) + str(uuid.uuid4()), 'png')
