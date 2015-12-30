@@ -57,45 +57,47 @@ def threshold(imageArray):
 #The real workhorse, determines what number the image contains based on the similarities
 #to our dataset.
 def whatNumIsThis(filePath):
-    matchedArray = []#
-    loadExamples = open('numArEx.txt', 'r').read()
-    loadExamples = loadExamples.split('\n')
+    matchedArray = []
+    loadExamples = open('numArEx.txt', 'r').read() #load all examples from our txt file
+    loadExamples = loadExamples.split('\n') #split each file into its own object
 
-    i = Image.open(filePath)
-    iar = np.array(i)
-    iarl = iar.tolist()
+    i = Image.open(filePath) #Open the file in question
+    iar = np.array(i) #Same as before, create an array of the image
+    iarl = iar.tolist() #Create a list from the array so we can change it to a string
 
-    inQuestion = str(iarl)
+    inQuestion = str(iarl) #Change the list to a string for manipulation (split())
 
+    #Iterate through each example to compare it to the image in question
     for example in loadExamples:
-        if len(example) > 3:
-            splitEx = example.split('::')
-            curNum = splitEx[0]
-            curArray = splitEx[1]
+        if len(example) > 3: #This if statement just prevents us from trying to use the eof line or any other mistake line
+                             #in the txt file
+            splitEx = example.split('::') #Split our examples to extract the data for use
+            curNum = splitEx[0] #The number of the example
+            curArray = splitEx[1] #The data contained in the example
 
-            pixel = curArray.split('],')
+            pixel = curArray.split('],') #Split the array into pixels
 
-            pixelInQuestion = inQuestion.split('],')
+            pixelInQuestion = inQuestion.split('],') #split the image in question into pixels
 
             x = 0
+            #iterate through the length of each pixel
             while (x < len(pixel)):
+                #if both pixels are dark or light, add a count to the matched array
                 if(pixel[x] == pixelInQuestion[x]):
                     matchedArray.append(int(curNum))
                 x += 1
 
     # print matchedArray
     x = Counter(matchedArray)
-    print x
+    print x #For testing. Prints the array to tell us how many of each number were found
     winner = 0
+
+    #iterate through all of the possible numbers 0-9 to determine the most likely winner
     for number in x:
         # print x[number]
         # print winner
+
+        #determine the winner based on the largest count
         if x[number] > x[winner]:
             winner = number
-    isCorrectAnswer = raw_input('is ' + str(winner) + ' the number you drew? ')
-    if(isCorrectAnswer == 'yes' or isCorrectAnswer == 'Yes'):
-        print 'Hoorah! I\'m learning.'
-        i.save('images/learned/'  + str(correctAnswer) + str(uuid.uuid4()), 'png')
-    elif (isCorrectAnswer == 'no') or (isCorrectAnswer == 'No'):
-        correctAnswer = input('What number did you draw? ')
-        i.save('images/learned/' + str(correctAnswer) + str(uuid.uuid4()), 'png')
+    return winner #return the number with the highest count 
