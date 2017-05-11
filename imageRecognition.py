@@ -33,7 +33,11 @@ def threshold(imageArray):
     #iterate through all pixels in the image and compute the average value
     for rows in imageArray:
         for pixel in rows:
-            avgNum = mean(pixel)
+            #print mean(pixel)
+            newP = []
+            for p in pixel:
+              newP.append(int(p))
+            avgNum = mean((newP))
             balanceArray.append(avgNum)
     for n in balanceArray:
         total += n
@@ -42,7 +46,7 @@ def threshold(imageArray):
     #Iterate through each pixel again and reassign new values to either black or white accordingly
     for rows in newArray:
         for pixel in rows:
-            if mean(pixel) < balance:
+            if mean(newP) < balance:
                 pixel[0] = 255
                 pixel[1] = 255
                 pixel[2] = 255
